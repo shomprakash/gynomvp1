@@ -77,10 +77,12 @@ export default {
 			},
 			backgroundImage: {
 				'gradient-primary': 'var(--gradient-primary)',
+				'gradient-cyber': 'var(--gradient-cyber)',
 				'gradient-subtle': 'var(--gradient-subtle)'
 			},
 			boxShadow: {
 				'glow': 'var(--shadow-glow)',
+				'neon': 'var(--shadow-neon)',
 				'card': 'var(--shadow-card)'
 			},
 			borderRadius: {

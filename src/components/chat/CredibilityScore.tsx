@@ -39,10 +39,10 @@ export const CredibilityScore = ({ score }: CredibilityScoreProps) => {
 
   return (
     <div className="flex items-center gap-1">
-      <div className={`flex items-center gap-1 px-2 py-1 rounded-full text-xs ${config.bgColor}`}>
-        <Icon className={`h-3 w-3 ${config.color}`} />
-        <span className={config.color}>
-          {score}%
+      <div className={`flex items-center gap-1 px-2 py-0.5 rounded border backdrop-blur-sm text-xs font-mono ${config.bgColor} border-${config.color.replace('text-', '')}/30`}>
+        <Icon className={`h-3 w-3 ${config.color} animate-pulse`} />
+        <span className={`${config.color} font-bold`}>
+          [{score}%]
         </span>
       </div>
     </div>

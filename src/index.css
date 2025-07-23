@@ -8,56 +8,58 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Professional medical dark theme */
-    --background: 220 15% 8%;
-    --foreground: 200 20% 95%;
+    /* Cyberpunk Matrix Theme - Dark Web Aesthetic */
+    --background: 0 0% 0%;
+    --foreground: 0 0% 100%;
 
-    --card: 220 15% 10%;
-    --card-foreground: 200 20% 95%;
+    --card: 0 0% 5%;
+    --card-foreground: 0 0% 100%;
 
-    --popover: 220 15% 12%;
-    --popover-foreground: 200 20% 95%;
+    --popover: 0 0% 3%;
+    --popover-foreground: 0 0% 100%;
 
-    --primary: 190 95% 55%;
-    --primary-foreground: 220 15% 8%;
-    --primary-glow: 190 95% 65%;
+    --primary: 120 100% 50%;
+    --primary-foreground: 0 0% 0%;
+    --primary-glow: 120 100% 60%;
 
-    --secondary: 220 15% 15%;
-    --secondary-foreground: 200 20% 90%;
+    --secondary: 0 0% 26%;
+    --secondary-foreground: 0 0% 100%;
 
-    --muted: 220 15% 12%;
-    --muted-foreground: 200 10% 65%;
+    --muted: 0 0% 10%;
+    --muted-foreground: 0 0% 60%;
 
-    --accent: 170 85% 45%;
-    --accent-foreground: 200 20% 95%;
+    --accent: 120 100% 40%;
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 75% 60%;
-    --destructive-foreground: 200 20% 95%;
+    --destructive: 0 100% 50%;
+    --destructive-foreground: 0 0% 100%;
 
-    --warning: 45 95% 65%;
-    --warning-foreground: 220 15% 8%;
+    --warning: 60 100% 50%;
+    --warning-foreground: 0 0% 0%;
 
-    --success: 145 85% 45%;
-    --success-foreground: 200 20% 95%;
+    --success: 120 100% 50%;
+    --success-foreground: 0 0% 0%;
 
-    --border: 220 15% 18%;
-    --input: 220 15% 12%;
-    --ring: 190 95% 55%;
+    --border: 0 0% 15%;
+    --input: 0 0% 8%;
+    --ring: 120 100% 50%;
 
-    --medical-blue: 200 85% 50%;
-    --medical-teal: 175 85% 45%;
-    --chat-bubble-user: 190 95% 55%;
-    --chat-bubble-ai: 220 15% 15%;
-    --credibility-high: 145 85% 45%;
-    --credibility-medium: 45 95% 65%;
-    --credibility-low: 0 75% 60%;
+    --medical-blue: 180 100% 50%;
+    --medical-teal: 160 100% 40%;
+    --chat-bubble-user: 120 100% 50%;
+    --chat-bubble-ai: 0 0% 10%;
+    --credibility-high: 120 100% 50%;
+    --credibility-medium: 60 100% 50%;
+    --credibility-low: 0 100% 50%;
 
-    --gradient-primary: linear-gradient(135deg, hsl(190 95% 55%), hsl(170 85% 45%));
-    --gradient-subtle: linear-gradient(180deg, hsl(220 15% 10%), hsl(220 15% 8%));
-    --shadow-glow: 0 0 30px hsl(190 95% 55% / 0.15);
-    --shadow-card: 0 4px 24px hsl(220 15% 4% / 0.4);
+    --gradient-primary: linear-gradient(135deg, hsl(120 100% 50%), hsl(140 100% 40%));
+    --gradient-cyber: linear-gradient(45deg, hsl(120 100% 50% / 0.1), hsl(140 100% 40% / 0.1));
+    --gradient-subtle: linear-gradient(180deg, hsl(0 0% 5%), hsl(0 0% 0%));
+    --shadow-glow: 0 0 40px hsl(120 100% 50% / 0.3);
+    --shadow-neon: 0 0 20px hsl(120 100% 50% / 0.5), 0 0 40px hsl(120 100% 50% / 0.3), 0 0 80px hsl(120 100% 50% / 0.1);
+    --shadow-card: 0 8px 32px hsl(0 0% 0% / 0.8), 0 0 0 1px hsl(120 100% 50% / 0.1);
 
-    --radius: 12px;
+    --radius: 8px;
   }
 
 }
