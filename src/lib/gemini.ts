@@ -38,20 +38,19 @@ Format your response as a natural medical consultation response.`;
     const response = await result.response;
     const text = response.text();
 
-    // Detect emergency keywords
+    // Detect emergency keywords - only trigger for urgent/distressing situations
     const emergencyKeywords = [
-      'severe pain', 'heavy bleeding', 'hemorrhage', 'passed out', 'fainted',
+      'severe pain', 'severe bleeding', 'continuous bleeding', 'heavy bleeding', 
+      'hemorrhage', 'passed out', 'fainted', 'can\'t stop bleeding',
       'severe cramping', 'chest pain', 'difficulty breathing', 'extreme pain',
-      'emergency', 'urgent', 'high fever', 'infected', 'severe nausea',
-      'sudden onset', 'couldn\'t stop bleeding', 'loss of consciousness'
+      'dizziness', 'severe pmdd', 'i am depressed', 'i am suicidal',
+      'thoughts of suicide', 'want to hurt myself', 'emergency room',
+      'urgent care', 'losing consciousness', 'severe nausea'
     ];
 
     const isEmergency = emergencyKeywords.some(keyword => 
-      message.toLowerCase().includes(keyword.toLowerCase()) ||
-      text.toLowerCase().includes('immediate medical attention') ||
-      text.toLowerCase().includes('emergency') ||
-      text.toLowerCase().includes('urgent care')
-    );
+      message.toLowerCase().includes(keyword.toLowerCase())
+    ) && !message.toLowerCase().includes('what is') && !message.toLowerCase().includes('define');
 
     // Calculate credibility score based on response content
     let credibilityScore = 85; // Base score
