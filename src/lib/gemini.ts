@@ -13,7 +13,7 @@ export const generateGynecologicalResponse = async (
 ): Promise<{ content: string; credibilityScore: number; isEmergency: boolean }> => {
   try {
     const genAI = getGeminiClient(customApiKey);
-    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
     const prompt = `You are a specialized AI gynecological health assistant. Provide evidence-based, accurate medical information about women's health, gynecology, periods, and related symptoms. 
 
