@@ -18,21 +18,23 @@ export const generateGynecologicalResponse = async (
     const prompt = `You are a specialized AI gynecological health assistant. Provide evidence-based, accurate medical information about women's health, gynecology, periods, and related symptoms. 
 
 IMPORTANT GUIDELINES:
-- Always provide medically accurate information
+- Always provide medically accurate, well-structured information
+- Use clear headings and bullet points for complex topics
 - Include a credibility score (0-100) based on evidence quality
 - Identify emergency symptoms that require immediate medical attention
 - Be supportive and non-judgmental
 - Recommend seeing a healthcare provider when appropriate
-- Cite medical sources when possible
+- Format your response with proper structure using headers (##) and bullet points (-)
+
+RESPONSE FORMAT:
+- Use ## for main sections
+- Use - for bullet points  
+- Use **bold** for important medical terms
+- Keep paragraphs concise and readable
 
 User question: "${message}"
 
-Please respond with:
-1. A comprehensive, medically accurate answer
-2. Whether this indicates an emergency situation (true/false)
-3. A credibility score (0-100) based on medical evidence
-
-Format your response as a natural medical consultation response.`;
+Provide a comprehensive, well-formatted medical response that addresses the question thoroughly.`;
 
     const result = await model.generateContent(prompt);
     const response = await result.response;

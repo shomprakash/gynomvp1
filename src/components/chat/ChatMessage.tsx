@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Share2, AlertTriangle } from "lucide-react";
 import { CredibilityScore } from "./CredibilityScore";
+import { MarkdownRenderer } from "./MarkdownRenderer";
 
 interface Message {
   id: string;
@@ -53,7 +54,11 @@ export const ChatMessage = ({ message, onShare }: ChatMessageProps) => {
           <div className={`leading-relaxed ${
             isUser ? 'text-primary' : 'text-foreground'
           }`}>
-            {message.content}
+            {isUser ? (
+              message.content
+            ) : (
+              <MarkdownRenderer content={message.content} />
+            )}
           </div>
           
           <div className="flex items-center justify-between mt-3 pt-2 border-t border-primary/10">

@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Send, Share2, Settings, Home } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { ChatMessage } from "./ChatMessage";
 import { EmergencyAlert } from "./EmergencyAlert";
 import { ShareModal } from "./ShareModal";
@@ -21,6 +21,7 @@ interface Message {
 
 export const ChatInterface = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
@@ -52,7 +53,15 @@ export const ChatInterface = () => {
     if (savedApiKey) {
       setCustomApiKey(savedApiKey);
     }
-  }, []);
+
+    // Handle initial query from homepage
+    const initialQuery = location.state?.initialQuery;
+    if (initialQuery && typeof initialQuery === 'string') {
+      setInput(initialQuery);
+      // Clear the state to prevent reprocessing on re-renders
+      window.history.replaceState({}, document.title);
+    }
+  }, [location.state]);
 
   const detectEmergency = (text: string): boolean => {
     const emergencyKeywords = [
@@ -179,7 +188,12 @@ export const ChatInterface = () => {
                     <div className="w-2 h-2 bg-primary rounded-full animate-bounce shadow-glow" style={{animationDelay: '0.1s'}}></div>
                     <div className="w-2 h-2 bg-primary rounded-full animate-bounce shadow-glow" style={{animationDelay: '0.2s'}}></div>
                   </div>
-                  <span className="text-sm text-primary font-mono">PROCESSING_QUERY...</span>
+                  <span className="text-sm text-primary font-mono">ANALYZING_MEDICAL_DATA...</span>
+                </div>
+                <div className="mt-3 space-y-1">
+                  <div className="h-2 bg-primary/20 rounded animate-pulse"></div>
+                  <div className="h-2 bg-primary/20 rounded animate-pulse" style={{animationDelay: '0.2s'}}></div>
+                  <div className="h-2 bg-primary/20 rounded animate-pulse w-3/4" style={{animationDelay: '0.4s'}}></div>
                 </div>
               </div>
             </div>

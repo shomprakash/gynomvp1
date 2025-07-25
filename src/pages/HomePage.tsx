@@ -1,8 +1,26 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Search } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const HomePage = () => {
   const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const handleSearch = () => {
+    if (searchQuery.trim()) {
+      navigate('/chat', { state: { initialQuery: searchQuery.trim() } });
+    } else {
+      navigate('/chat');
+    }
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      handleSearch();
+    }
+  };
 
   return (
     <div className="min-h-screen bg-background flex flex-col items-center justify-center px-4 relative overflow-hidden">
@@ -28,11 +46,31 @@ const HomePage = () => {
           </p>
         </div>
 
-        {/* Search button */}
+        {/* Search bar */}
+        <div className="mb-8 w-full max-w-2xl">
+          <div className="relative">
+            <Input
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              onKeyPress={handleKeyPress}
+              placeholder=">>> ENTER_QUERY: periods, symptoms, PMDD, contraception..."
+              className="w-full h-14 pl-6 pr-14 text-lg bg-input/50 border-primary/30 focus:ring-primary focus:border-primary font-mono placeholder:text-muted-foreground/60 shadow-glow backdrop-blur-sm"
+            />
+            <Button
+              onClick={handleSearch}
+              className="absolute right-2 top-2 h-10 w-10 p-0 bg-gradient-primary hover:shadow-neon transition-all duration-300"
+            >
+              <Search className="h-5 w-5" />
+            </Button>
+          </div>
+        </div>
+
+        {/* Action buttons */}
         <div className="space-y-4">
           <Button
             onClick={() => navigate('/chat')}
-            className="px-8 py-4 text-lg bg-gradient-primary hover:shadow-neon transition-all duration-300 font-mono border border-primary/50 min-w-[200px]"
+            variant="outline"
+            className="px-8 py-4 text-lg border-primary/50 hover:border-primary hover:shadow-glow transition-all duration-300 font-mono min-w-[200px]"
           >
             START_CONSULTATION
           </Button>
