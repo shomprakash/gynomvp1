@@ -16,10 +16,13 @@ export const ApiKeyModal = ({ isOpen, onClose, onSave }: ApiKeyModalProps) => {
 
   const handleSave = () => {
     if (apiKey.trim()) {
-      localStorage.setItem('deepseek_api_key', apiKey.trim());
+      localStorage.setItem('gemini_custom_api_key', apiKey.trim());
       onSave(apiKey.trim());
-      onClose();
+    } else {
+      localStorage.removeItem('gemini_custom_api_key');
+      onSave('');
     }
+    onClose();
   };
 
   return (
@@ -31,7 +34,7 @@ export const ApiKeyModal = ({ isOpen, onClose, onSave }: ApiKeyModalProps) => {
             API_KEY_CONFIGURATION
           </DialogTitle>
           <DialogDescription className="text-muted-foreground font-mono text-sm">
-            // Enter your DeepSeek API key for accurate medical responses
+            // Optional: Use custom Google Gemini API key (default key provided)
           </DialogDescription>
         </DialogHeader>
         
@@ -39,14 +42,14 @@ export const ApiKeyModal = ({ isOpen, onClose, onSave }: ApiKeyModalProps) => {
           <div className="flex items-center gap-2 p-3 bg-primary/10 border border-primary/20 rounded">
             <Shield className="h-4 w-4 text-primary" />
             <span className="text-xs text-primary font-mono">
-              SECURE: Key stored locally in browser only
+              SECURE: Custom key stored locally only. Default key active if empty.
             </span>
           </div>
           
           <div className="relative">
             <Input
               type={showKey ? "text" : "password"}
-              placeholder="sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+              placeholder="AIzaSy... (optional - leave empty for default)"
               value={apiKey}
               onChange={(e) => setApiKey(e.target.value)}
               className="pr-10 font-mono text-sm bg-input border-primary/30 focus:border-primary"
@@ -72,10 +75,9 @@ export const ApiKeyModal = ({ isOpen, onClose, onSave }: ApiKeyModalProps) => {
             </Button>
             <Button
               onClick={handleSave}
-              disabled={!apiKey.trim()}
               className="flex-1 bg-gradient-primary hover:shadow-neon"
             >
-              INITIALIZE
+              {apiKey.trim() ? 'SET_CUSTOM' : 'USE_DEFAULT'}
             </Button>
           </div>
         </div>

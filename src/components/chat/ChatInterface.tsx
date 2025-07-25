@@ -1,11 +1,13 @@
 import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Send, Camera, Share2, AlertTriangle, Phone, Settings } from "lucide-react";
+import { Send, Share2, Settings, Home } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { ChatMessage } from "./ChatMessage";
 import { EmergencyAlert } from "./EmergencyAlert";
 import { ShareModal } from "./ShareModal";
 import { ApiKeyModal } from "./ApiKeyModal";
+import { generateGynecologicalResponse } from "@/lib/gemini";
 import { toast } from "sonner";
 
 interface Message {
@@ -18,10 +20,11 @@ interface Message {
 }
 
 export const ChatInterface = () => {
+  const navigate = useNavigate();
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      content: "Hello! I'm your confidential gynecological health assistant. I provide evidence-based information about women's health, periods, symptoms, and wellness. What would you like to know?",
+      content: "Hello! I'm your AI gynecological health assistant powered by advanced medical AI. I provide evidence-based information about women's health, periods, symptoms, and wellness. All responses include credibility scores based on medical evidence. What would you like to know?",
       type: 'ai',
       timestamp: new Date(),
       credibilityScore: 95
@@ -32,7 +35,7 @@ export const ChatInterface = () => {
   const [showEmergency, setShowEmergency] = useState(false);
   const [showShare, setShowShare] = useState<string | null>(null);
   const [showApiKey, setShowApiKey] = useState(false);
-  const [apiKey, setApiKey] = useState<string | null>(null);
+  const [customApiKey, setCustomApiKey] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
@@ -45,9 +48,9 @@ export const ChatInterface = () => {
   }, [messages]);
 
   useEffect(() => {
-    const savedApiKey = localStorage.getItem('deepseek_api_key');
+    const savedApiKey = localStorage.getItem('gemini_custom_api_key');
     if (savedApiKey) {
-      setApiKey(savedApiKey);
+      setCustomApiKey(savedApiKey);
     }
   }, []);
 
@@ -65,44 +68,8 @@ export const ChatInterface = () => {
   };
 
   const generateResponse = async (userMessage: string): Promise<{ content: string; credibilityScore: number; isEmergency: boolean }> => {
-    // Mock API call - in real implementation, this would call DeepSeek API
     setIsLoading(true);
-    
-    await new Promise(resolve => setTimeout(resolve, 1500)); // Simulate API delay
-    
-    const isEmergency = detectEmergency(userMessage);
-    
-    if (isEmergency) {
-      return {
-        content: "⚠️ Based on your symptoms, this could require immediate medical attention. I strongly recommend contacting a healthcare provider right away. Here's what you should know while seeking care: [detailed medical guidance would appear here]",
-        credibilityScore: 98,
-        isEmergency: true
-      };
-    }
-
-    // Mock responses based on common topics
-    const responses = [
-      {
-        content: "Period irregularities can be caused by various factors including stress, weight changes, hormonal imbalances, or underlying conditions like PCOS. A normal cycle ranges from 21-35 days. If your cycle varies significantly from your norm or you experience other symptoms, consider tracking your cycles and consulting with a gynecologist.",
-        credibilityScore: 92
-      },
-      {
-        content: "Vaginal discharge varies throughout your menstrual cycle. Normal discharge is usually clear or white, odorless or with a mild scent. Watch for changes in color, consistency, or smell, especially if accompanied by itching, burning, or pain, as these could indicate an infection requiring medical attention.",
-        credibilityScore: 89
-      },
-      {
-        content: "Menstrual cramps are common but shouldn't be debilitating. Over-the-counter pain relievers, heat therapy, gentle exercise, and adequate hydration can help. If cramps severely impact your daily life, it could indicate conditions like endometriosis or fibroids - worth discussing with a healthcare provider.",
-        credibilityScore: 94
-      }
-    ];
-
-    const randomResponse = responses[Math.floor(Math.random() * responses.length)];
-    
-    return {
-      content: randomResponse.content,
-      credibilityScore: randomResponse.credibilityScore,
-      isEmergency: false
-    };
+    return await generateGynecologicalResponse(userMessage, customApiKey);
   };
 
   const handleSend = async () => {
@@ -149,12 +116,6 @@ export const ChatInterface = () => {
     }
   };
 
-  const handleScreenshot = () => {
-    if (chatContainerRef.current) {
-      // In a real implementation, you'd use html2canvas or similar
-      toast.success("Screenshot feature coming soon!");
-    }
-  };
 
   const handleEmergencyCall = () => {
     window.open('https://www.google.com/search?q=gynecologist+near+me', '_blank');
@@ -175,19 +136,21 @@ export const ChatInterface = () => {
               <div className="w-2 h-2 bg-primary rounded-full animate-pulse shadow-neon"></div>
               <div>
                 <h1 className="text-xl sm:text-2xl font-bold text-primary font-mono tracking-wider">GYNO.APP</h1>
-                <p className="text-xs sm:text-sm text-muted-foreground font-mono">/// SECURE_CHANNEL_ESTABLISHED</p>
+                <p className="text-xs sm:text-sm text-muted-foreground font-mono">/// AI_GYNECOLOGICAL_ASSISTANT</p>
               </div>
             </div>
             <div className="flex gap-2">
+              <Button variant="outline" size="sm" onClick={() => navigate('/')} className="border-primary/30 hover:border-primary hover:shadow-glow">
+                <Home className="h-4 w-4" />
+                <span className="hidden sm:inline ml-1">HOME</span>
+              </Button>
               <Button variant="outline" size="sm" onClick={() => setShowApiKey(true)} className="border-primary/30 hover:border-primary hover:shadow-glow">
                 <Settings className="h-4 w-4" />
                 <span className="hidden sm:inline ml-1">API</span>
               </Button>
-              <Button variant="outline" size="sm" onClick={handleScreenshot} className="border-primary/30 hover:border-primary hover:shadow-glow">
-                <Camera className="h-4 w-4" />
-              </Button>
               <Button variant="outline" size="sm" onClick={() => setShowShare('general')} className="border-primary/30 hover:border-primary hover:shadow-glow">
                 <Share2 className="h-4 w-4" />
+                <span className="hidden sm:inline ml-1">SHARE</span>
               </Button>
             </div>
           </div>
@@ -277,8 +240,9 @@ export const ChatInterface = () => {
         isOpen={showApiKey}
         onClose={() => setShowApiKey(false)}
         onSave={(key) => {
-          setApiKey(key);
-          toast.success("API key configured successfully!");
+          setCustomApiKey(key);
+          localStorage.setItem('gemini_custom_api_key', key);
+          toast.success("Custom API key configured successfully!");
         }}
       />
     </div>
