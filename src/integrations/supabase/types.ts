@@ -14,7 +14,108 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      period_cycles: {
+        Row: {
+          created_at: string
+          cycle_end_date: string | null
+          cycle_length: number | null
+          cycle_start_date: string
+          id: string
+          ovulation_date: string | null
+          period_end_date: string | null
+          period_length: number | null
+          period_start_date: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          cycle_end_date?: string | null
+          cycle_length?: number | null
+          cycle_start_date: string
+          id?: string
+          ovulation_date?: string | null
+          period_end_date?: string | null
+          period_length?: number | null
+          period_start_date: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          cycle_end_date?: string | null
+          cycle_length?: number | null
+          cycle_start_date?: string
+          id?: string
+          ovulation_date?: string | null
+          period_end_date?: string | null
+          period_length?: number | null
+          period_start_date?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          email: string
+          full_name: string | null
+          id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          full_name?: string | null
+          id?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          full_name?: string | null
+          id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      symptoms: {
+        Row: {
+          created_at: string
+          date: string
+          id: string
+          notes: string | null
+          severity: number
+          symptom_type: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          date: string
+          id?: string
+          notes?: string | null
+          severity: number
+          symptom_type: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          date?: string
+          id?: string
+          notes?: string | null
+          severity?: number
+          symptom_type?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
