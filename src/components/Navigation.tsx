@@ -1,13 +1,16 @@
 import { useState } from "react";
-import { Heart, User, TrendingUp, Menu, X } from "lucide-react";
+import { Heart, User, TrendingUp, Menu, X, Sun, Moon } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Badge } from "@/components/ui/badge";
 import { Link, useLocation } from "react-router-dom";
+import { useTheme } from "@/hooks/useTheme";
 
 export const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+  const { theme, toggleTheme } = useTheme();
 
   const navigationItems = [
     { name: "Home", href: "/", icon: Heart },
@@ -60,6 +63,15 @@ export const Navigation = () => {
       <div className="hidden md:flex items-center gap-2 bg-background/80 backdrop-blur-md border rounded-full px-4 py-2 shadow-lg">
         <Heart className="h-5 w-5 text-primary mr-2" />
         <NavItems />
+        <div className="flex items-center gap-2 ml-2 pl-2 border-l border-border/50">
+          <Sun className="h-4 w-4 text-muted-foreground" />
+          <Switch
+            checked={theme === 'light'}
+            onCheckedChange={toggleTheme}
+            className="data-[state=checked]:bg-primary"
+          />
+          <Moon className="h-4 w-4 text-muted-foreground" />
+        </div>
       </div>
 
       {/* Mobile Navigation */}
@@ -81,6 +93,18 @@ export const Navigation = () => {
             </div>
             <div className="flex flex-col gap-2">
               <NavItems mobile />
+              <div className="flex items-center gap-2 mt-4 pt-4 border-t border-border/50">
+                <Sun className="h-4 w-4 text-muted-foreground" />
+                <Switch
+                  checked={theme === 'light'}
+                  onCheckedChange={toggleTheme}
+                  className="data-[state=checked]:bg-primary"
+                />
+                <Moon className="h-4 w-4 text-muted-foreground" />
+                <span className="text-sm text-muted-foreground ml-2">
+                  {theme === 'light' ? 'Light' : 'Dark'} Mode
+                </span>
+              </div>
             </div>
           </SheetContent>
         </Sheet>
