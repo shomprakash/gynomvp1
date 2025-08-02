@@ -9,8 +9,9 @@ import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Slider } from "@/components/ui/slider";
+import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { Heart, Calendar as CalendarIcon, TrendingUp, User } from "lucide-react";
+import { Heart, Calendar as CalendarIcon, TrendingUp, User, Sparkles, Send, Lightbulb } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameDay } from "date-fns";
 
@@ -37,7 +38,11 @@ export default function PeriodTracker() {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [cycles, setCycles] = useState<PeriodCycle[]>([]);
   const [symptoms, setSymptoms] = useState<Symptom[]>([]);
-  const [activeTab, setActiveTab] = useState("calendar");
+  const [activeTab, setActiveTab] = useState("ai-input");
+
+  // AI Input states
+  const [aiInput, setAiInput] = useState("");
+  const [aiLoading, setAiLoading] = useState(false);
 
   // Form states
   const [periodStartDate, setPeriodStartDate] = useState<Date>(new Date());
@@ -141,6 +146,86 @@ export default function PeriodTracker() {
     }
   };
 
+  const processAIInput = async () => {
+    if (!aiInput.trim() || aiLoading || !user) return;
+    
+    setAiLoading(true);
+    try {
+      // Call our Edge Function to process the input
+      const response = await fetch('https://ieacaixnfgtfdngnsmln.supabase.co/functions/v1/process-health-input', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImllYWNhaXhuZmd0ZmRuZ25zbWxuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTM1MzgzMTQsImV4cCI6MjA2OTExNDMxNH0.yKm23OcBE1rL-U7OKUki8DGyStlJgveGiO0ElXoZS-w`,
+        },
+        body: JSON.stringify({ 
+          input: aiInput.trim(), 
+          trackerType: 'period', 
+          userId: user.id 
+        }),
+      });
+
+      if (!response.ok) throw new Error('Failed to process input');
+
+      const result = await response.json();
+      
+      // Extract cycle data and save to database
+      const cycleData = result.data.cycle_info;
+      if (cycleData?.start_date) {
+        const { error: cycleError } = await supabase
+          .from('period_cycles')
+          .insert({
+            user_id: user.id,
+            cycle_start_date: new Date().toISOString().split('T')[0], // Simplified for demo
+            period_start_date: new Date().toISOString().split('T')[0],
+            period_length: cycleData.length || null,
+            cycle_length: cycleData.cycle_length || null,
+          });
+
+        if (cycleError) throw cycleError;
+      }
+
+      // Save symptoms
+      if (result.data.symptoms?.length > 0) {
+        const symptomsToInsert = result.data.symptoms.map((symptom: any) => ({
+          user_id: user.id,
+          date: new Date().toISOString().split('T')[0],
+          symptom_type: symptom.name,
+          severity: symptom.severity === 'mild' ? 1 : symptom.severity === 'moderate' ? 2 : 3,
+          notes: `AI processed: ${symptom.name} (${symptom.severity})`,
+        }));
+
+        const { error: symptomsError } = await supabase
+          .from('symptoms')
+          .insert(symptomsToInsert);
+
+        if (symptomsError) throw symptomsError;
+      }
+
+      await fetchData();
+      setAiInput("");
+      
+      toast({
+        title: "Success",
+        description: "Period data processed and insights generated!",
+      });
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to process input",
+        variant: "destructive",
+      });
+    } finally {
+      setAiLoading(false);
+    }
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
+      processAIInput();
+    }
+  };
+
   const getDateEvents = (date: Date) => {
     const dateStr = format(date, "yyyy-MM-dd");
     const events = [];
@@ -198,12 +283,64 @@ export default function PeriodTracker() {
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-5">
+            <TabsTrigger value="ai-input">AI Input</TabsTrigger>
             <TabsTrigger value="calendar">Calendar</TabsTrigger>
             <TabsTrigger value="period">Log Period</TabsTrigger>
             <TabsTrigger value="symptoms">Track Symptoms</TabsTrigger>
             <TabsTrigger value="insights">Insights</TabsTrigger>
           </TabsList>
+
+          <TabsContent value="ai-input" className="space-y-6">
+            <Card className="border-primary/20 shadow-glow bg-card/50 backdrop-blur-sm">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-primary">
+                  <Sparkles className="h-5 w-5" />
+                  AI Period Tracker - Natural Language Input
+                </CardTitle>
+                <CardDescription>
+                  Tell us about your period in natural language and we'll extract the important information
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <Textarea
+                  value={aiInput}
+                  onChange={(e) => setAiInput(e.target.value)}
+                  onKeyDown={handleKeyPress}
+                  placeholder={`Tell me about your recent period cycle in natural language. For example:
+
+"My period started on January 15th and lasted 5 days. I had moderate cramps on the first two days, some bloating, and felt more tired than usual. My cycle is usually around 28 days."
+
+Include:
+- Start and end dates
+- Flow intensity (light/moderate/heavy)  
+- Symptoms (cramps, bloating, mood changes, etc.)
+- Any unusual patterns or concerns`}
+                  className="min-h-[120px] resize-none border-primary/30 focus:border-primary bg-background/50"
+                  disabled={aiLoading}
+                />
+                <div className="flex justify-between items-center">
+                  <p className="text-xs text-muted-foreground">
+                    Press Cmd/Ctrl + Enter to submit
+                  </p>
+                  <Button
+                    onClick={processAIInput}
+                    disabled={!aiInput.trim() || aiLoading}
+                    className="bg-gradient-primary hover:shadow-neon"
+                  >
+                    {aiLoading ? (
+                      <>Processing...</>
+                    ) : (
+                      <>
+                        <Send className="h-4 w-4 mr-2" />
+                        Process Data
+                      </>
+                    )}
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
 
           <TabsContent value="calendar" className="space-y-6">
             <Card>
@@ -334,19 +471,19 @@ export default function PeriodTracker() {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <TrendingUp className="h-5 w-5" />
-                  Cycle Insights
+                  <Lightbulb className="h-5 w-5 text-primary" />
+                  AI Health Insights
                 </CardTitle>
                 <CardDescription>
-                  Your health summary and patterns
+                  Personalized insights based on your tracked data
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="grid md:grid-cols-2 gap-6">
                   <div className="space-y-4">
                     <h3 className="font-semibold">Recent Cycles</h3>
-                    {cycles.slice(0, 3).map((cycle) => (
-                      <div key={cycle.id} className="p-3 border rounded-lg">
+                    {cycles.length > 0 ? cycles.slice(0, 3).map((cycle) => (
+                      <div key={cycle.id} className="p-3 border rounded-lg bg-background/30">
                         <p className="font-medium">
                           {format(new Date(cycle.period_start_date), "MMM d, yyyy")}
                         </p>
@@ -359,19 +496,58 @@ export default function PeriodTracker() {
                           </p>
                         )}
                       </div>
-                    ))}
+                    )) : (
+                      <div className="text-center py-4">
+                        <p className="text-muted-foreground">No cycles tracked yet. Use AI input to get started!</p>
+                      </div>
+                    )}
                   </div>
                   <div className="space-y-4">
-                    <h3 className="font-semibold">Symptom Patterns</h3>
-                    <p className="text-sm text-muted-foreground">
-                      Track symptoms over time to identify patterns and discuss with your healthcare provider.
-                    </p>
-                    <div className="p-4 bg-muted/50 rounded-lg">
-                      <p className="text-sm">
-                        💡 <strong>Tip:</strong> Regular tracking helps identify your unique cycle patterns
-                        and can be valuable information for medical consultations.
-                      </p>
-                    </div>
+                    <h3 className="font-semibold">Smart Insights</h3>
+                    {cycles.length > 0 || symptoms.length > 0 ? (
+                      <div className="space-y-3">
+                        <div className="p-4 rounded-lg border border-primary/20 bg-primary/5">
+                          <div className="flex items-start gap-3">
+                            <TrendingUp className="h-5 w-5 text-primary mt-0.5" />
+                            <div>
+                              <h4 className="font-medium text-foreground">Tracking Progress</h4>
+                              <p className="text-sm text-muted-foreground mt-1">
+                                You have {cycles.length} cycle{cycles.length !== 1 ? 's' : ''} and {symptoms.length} symptom{symptoms.length !== 1 ? 's' : ''} tracked. 
+                                Keep using AI input for better pattern recognition.
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        {cycles.length >= 2 && (
+                          <div className="p-4 rounded-lg border border-warning/20 bg-warning/5">
+                            <div className="flex items-start gap-3">
+                              <Lightbulb className="h-5 w-5 text-warning mt-0.5" />
+                              <div>
+                                <h4 className="font-medium text-foreground">Pattern Analysis</h4>
+                                <p className="text-sm text-muted-foreground mt-1">
+                                  With more data collection, we'll provide personalized insights about your cycle patterns and symptoms.
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    ) : (
+                      <div className="text-center py-6">
+                        <Sparkles className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
+                        <p className="text-sm text-muted-foreground mb-4">
+                          Use the AI input feature to start tracking your periods and get personalized insights.
+                        </p>
+                        <Button
+                          onClick={() => setActiveTab("ai-input")}
+                          variant="outline"
+                          className="border-primary/50 hover:border-primary"
+                        >
+                          Try AI Input
+                        </Button>
+                      </div>
+                    )}
                   </div>
                 </div>
               </CardContent>

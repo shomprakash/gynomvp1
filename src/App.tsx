@@ -25,11 +25,11 @@ const App = () => (
           <BrowserRouter>
             <Navigation />
             <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/chat" element={<Index />} />
-              <Route path="/auth" element={<AuthPage />} />
-              <Route path="/tracker" element={<PeriodTracker />} />
-              <Route path="/investors" element={<InvestorsPage />} />
+            <Route path="/" element={<HomePage />} />
+            <Route path="/chat" element={<Index />} />
+            <Route path="/auth" element={<AuthPage />} />
+            <Route path="/tracker" element={<PeriodTracker />} />
+            <Route path="/investors" element={<InvestorsPage />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
