@@ -21,17 +21,6 @@ export default {
 			fontFamily: {
 				'noto': ['Noto Sans', 'sans-serif'],
 				'serif': ['PT Serif', 'serif'],
-				'sans': ['Noto Sans', 'sans-serif'],
-			},
-			fontSize: {
-				'ada-title': ['var(--font-size-title)', 'var(--line-height-title)'],
-				'ada-h1': ['var(--font-size-heading1)', 'var(--line-height-heading1)'],
-				'ada-h2': ['var(--font-size-heading2)', 'var(--line-height-heading2)'],
-				'ada-h3': ['var(--font-size-heading3)', 'var(--line-height-heading3)'],
-				'ada-text': ['var(--font-size-text)', 'var(--line-height-text)'],
-				'ada-text-l': ['var(--font-size-text-l)', 'var(--line-height-text-l)'],
-				'ada-text-s': ['var(--font-size-text-s)', 'var(--line-height-text-s)'],
-				'ada-text-xs': ['var(--font-size-text-xs)', 'var(--line-height-text-xs)'],
 			},
 			colors: {
 				border: 'hsl(var(--border))',
