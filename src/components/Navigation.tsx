@@ -63,15 +63,18 @@ export const Navigation = () => {
       <div className="hidden md:flex items-center gap-2 bg-background/80 backdrop-blur-md border rounded-full px-4 py-2 shadow-lg">
         <Heart className="h-5 w-5 text-primary mr-2" />
         <NavItems />
-        <div className="flex items-center gap-2 ml-2 pl-2 border-l border-border/50">
-          <Sun className="h-4 w-4 text-muted-foreground" />
-          <Switch
-            checked={theme === 'light'}
-            onCheckedChange={toggleTheme}
-            className="data-[state=checked]:bg-primary"
-          />
-          <Moon className="h-4 w-4 text-muted-foreground" />
-        </div>
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={toggleTheme}
+          className="relative"
+        >
+          {theme === 'light' ? (
+            <Sun className="h-5 w-5 transition-all" />
+          ) : (
+            <Moon className="h-5 w-5 transition-all" />
+          )}
+        </Button>
       </div>
 
       {/* Mobile Navigation */}
@@ -89,22 +92,28 @@ export const Navigation = () => {
           <SheetContent side="right" className="w-64">
             <div className="flex items-center gap-2 mb-6">
               <Heart className="h-5 w-5 text-primary" />
-              <span className="font-semibold">GYNO.APP</span>
+              <span className="font-semibold">gyno</span>
             </div>
             <div className="flex flex-col gap-2">
               <NavItems mobile />
-              <div className="flex items-center gap-2 mt-4 pt-4 border-t border-border/50">
-                <Sun className="h-4 w-4 text-muted-foreground" />
-                <Switch
-                  checked={theme === 'light'}
-                  onCheckedChange={toggleTheme}
-                  className="data-[state=checked]:bg-primary"
-                />
-                <Moon className="h-4 w-4 text-muted-foreground" />
-                <span className="text-sm text-muted-foreground ml-2">
-                  {theme === 'light' ? 'Light' : 'Dark'} Mode
-                </span>
-              </div>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={toggleTheme}
+                className="w-full justify-start mt-4 pt-4 border-t border-border/50"
+              >
+                {theme === 'light' ? (
+                  <>
+                    <Sun className="h-5 w-5 mr-2" />
+                    Light Mode
+                  </>
+                ) : (
+                  <>
+                    <Moon className="h-5 w-5 mr-2" />
+                    Dark Mode
+                  </>
+                )}
+              </Button>
             </div>
           </SheetContent>
         </Sheet>
