@@ -8,7 +8,40 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Light Mode - Ada.com inspired professional healthcare UI */
+    /* Light Mode - Ada.com exact styling */
+    --color-anchor: #1266c7;
+    --color-background: #fff;
+    --color-default: #293754;
+    
+    /* Font size hierarchy from Ada.com */
+    --font-size-button-l: 1.7rem;
+    --font-size-button: 1.3rem;
+    --font-size-heading1: 3.4rem;
+    --font-size-heading2: 2.8rem;
+    --font-size-heading3: 1.9rem;
+    --font-size-heading4: 1.7rem;
+    --font-size-input: 1.5rem;
+    --font-size-text-l: 2rem;
+    --font-size-text-s: 1.5rem;
+    --font-size-text-xs: 1.3rem;
+    --font-size-text: 1.7rem;
+    --font-size-title: 4rem;
+    
+    /* Line heights from Ada.com */
+    --line-height-button-l: 1.59;
+    --line-height-button: 1.57;
+    --line-height-heading1: 1.12;
+    --line-height-heading2: 1.29;
+    --line-height-heading3: 1.47;
+    --line-height-heading4: 1.65;
+    --line-height-input: 1.6;
+    --line-height-text-l: 1.54;
+    --line-height-text-s: 1.6;
+    --line-height-text-xs: 1.54;
+    --line-height-text: 1.65;
+    --line-height-title: 1.2;
+
+    /* Design system colors */
     --background: 0 0% 100%;
     --foreground: 215 25% 27%;
 
@@ -22,7 +55,7 @@ All colors MUST be HSL.
     --primary-foreground: 0 0% 100%;
     --primary-glow: 210 79% 56%;
 
-    --secondary: 0 0% 96%;
+    --secondary: 239 13% 97%;
     --secondary-foreground: 215 25% 27%;
 
     --muted: 220 13% 91%;
@@ -47,7 +80,7 @@ All colors MUST be HSL.
     --medical-blue: 210 79% 46%;
     --medical-teal: 158 64% 52%;
     --chat-bubble-user: 210 79% 46%;
-    --chat-bubble-ai: 0 0% 96%;
+    --chat-bubble-ai: 239 13% 97%;
     --credibility-high: 142 76% 36%;
     --credibility-medium: 38 92% 50%;
     --credibility-low: 0 84% 60%;
@@ -60,33 +93,41 @@ All colors MUST be HSL.
     --shadow-card: 0 2px 20px hsl(0 0% 0% / 0.06), 0 0 0 1px hsl(220 13% 91%);
 
     --radius: 12px;
+    
+    /* Z-index layers from Ada.com */
+    --z-index-background: -100;
+    --z-index-content: 0;
+    --z-index-lower: 100;
+    --z-index-middle: 200;
+    --z-index-top: 400;
+    --z-index-max: 900;
   }
 
   .dark {
-    /* Dark Mode - Cyberpunk Matrix Theme */
-    --background: 0 0% 0%;
-    --foreground: 0 0% 100%;
+    /* Dark Mode - Professional medical dark theme */
+    --background: 220 25% 8%;
+    --foreground: 0 0% 95%;
 
-    --card: 0 0% 5%;
-    --card-foreground: 0 0% 100%;
+    --card: 220 25% 10%;
+    --card-foreground: 0 0% 95%;
 
-    --popover: 0 0% 3%;
-    --popover-foreground: 0 0% 100%;
+    --popover: 220 25% 8%;
+    --popover-foreground: 0 0% 95%;
 
-    --primary: 120 100% 50%;
-    --primary-foreground: 0 0% 0%;
-    --primary-glow: 120 100% 60%;
+    --primary: 210 100% 65%;
+    --primary-foreground: 0 0% 5%;
+    --primary-glow: 210 100% 75%;
 
-    --secondary: 0 0% 26%;
-    --secondary-foreground: 0 0% 100%;
+    --secondary: 220 25% 15%;
+    --secondary-foreground: 0 0% 95%;
 
-    --muted: 0 0% 10%;
-    --muted-foreground: 0 0% 60%;
+    --muted: 220 25% 12%;
+    --muted-foreground: 220 10% 60%;
 
-    --accent: 120 100% 40%;
-    --accent-foreground: 0 0% 100%;
+    --accent: 220 25% 15%;
+    --accent-foreground: 0 0% 95%;
 
-    --destructive: 0 100% 50%;
+    --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
     --warning: 60 100% 50%;
@@ -95,28 +136,27 @@ All colors MUST be HSL.
     --success: 120 100% 50%;
     --success-foreground: 0 0% 0%;
 
-    --border: 0 0% 15%;
-    --input: 0 0% 8%;
-    --ring: 120 100% 50%;
+    --border: 220 25% 20%;
+    --input: 220 25% 12%;
+    --ring: 210 100% 65%;
 
-    --medical-blue: 180 100% 50%;
+    --medical-blue: 210 100% 65%;
     --medical-teal: 160 100% 40%;
-    --chat-bubble-user: 120 100% 50%;
-    --chat-bubble-ai: 0 0% 10%;
+    --chat-bubble-user: 210 100% 65%;
+    --chat-bubble-ai: 220 25% 12%;
     --credibility-high: 120 100% 50%;
     --credibility-medium: 60 100% 50%;
     --credibility-low: 0 100% 50%;
 
-    --gradient-primary: linear-gradient(135deg, hsl(120 100% 50%), hsl(140 100% 40%));
-    --gradient-cyber: linear-gradient(45deg, hsl(120 100% 50% / 0.1), hsl(140 100% 40% / 0.1));
-    --gradient-subtle: linear-gradient(180deg, hsl(0 0% 5%), hsl(0 0% 0%));
-    --shadow-glow: 0 0 40px hsl(120 100% 50% / 0.3);
-    --shadow-neon: 0 0 20px hsl(120 100% 50% / 0.5), 0 0 40px hsl(120 100% 50% / 0.3), 0 0 80px hsl(120 100% 50% / 0.1);
-    --shadow-card: 0 8px 32px hsl(0 0% 0% / 0.8), 0 0 0 1px hsl(120 100% 50% / 0.1);
+    --gradient-primary: linear-gradient(135deg, hsl(210 100% 65%), hsl(210 100% 75%));
+    --gradient-cyber: linear-gradient(45deg, hsl(210 100% 65% / 0.1), hsl(210 100% 75% / 0.1));
+    --gradient-subtle: linear-gradient(180deg, hsl(220 25% 10%), hsl(220 25% 8%));
+    --shadow-glow: 0 0 40px hsl(210 100% 65% / 0.3);
+    --shadow-neon: 0 0 20px hsl(210 100% 65% / 0.5), 0 0 40px hsl(210 100% 65% / 0.3);
+    --shadow-card: 0 8px 32px hsl(0 0% 0% / 0.8), 0 0 0 1px hsl(210 100% 65% / 0.1);
 
     --radius: 8px;
   }
-
 }
 
 @layer base {
@@ -127,10 +167,100 @@ All colors MUST be HSL.
   body {
     @apply bg-background text-foreground;
     font-family: 'Noto Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    font-size: var(--font-size-text);
+    line-height: var(--line-height-text);
+    color: var(--color-default);
+    transition: background-color 0.2s ease, color 0.2s ease;
   }
 
-  /* Custom scrollbar for chat */
+  /* Typography hierarchy matching Ada.com */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'PT Serif', serif;
+    font-weight: 400;
+    margin-bottom: 2rem;
+  }
+
+  h1 {
+    font-size: var(--font-size-title);
+    line-height: var(--line-height-title);
+  }
+
+  h2 {
+    font-size: var(--font-size-heading1);
+    line-height: var(--line-height-heading1);
+  }
+
+  h3 {
+    font-size: var(--font-size-heading2);
+    line-height: var(--line-height-heading2);
+  }
+
+  h4 {
+    font-size: var(--font-size-heading3);
+    line-height: var(--line-height-heading3);
+  }
+
+  h5 {
+    font-family: 'Noto Sans', sans-serif;
+    font-size: var(--font-size-heading4);
+    line-height: var(--line-height-heading4);
+    font-weight: 700;
+  }
+
+  p {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  /* Links matching Ada.com */
+  a {
+    color: var(--color-anchor);
+    transition: color 0.2s ease;
+    text-decoration: none;
+  }
+
+  a:hover {
+    color: var(--color-default);
+    text-decoration: underline;
+  }
+
+  /* Buttons matching Ada.com */
+  .btn-primary {
+    background-color: var(--color-default);
+    color: white;
+    border: 1px solid var(--color-default);
+    border-radius: 100px;
+    padding: 9px 30px;
+    font-size: var(--font-size-button);
+    line-height: var(--line-height-button);
+    font-weight: bold;
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  }
+
+  .btn-primary:hover {
+    background-color: var(--color-anchor);
+    border-color: var(--color-anchor);
+    color: white;
+  }
+
+  .btn-secondary {
+    background-color: white;
+    color: var(--color-default);
+    border: 1px solid var(--color-default);
+    border-radius: 100px;
+    padding: 9px 30px;
+    font-size: var(--font-size-button);
+    line-height: var(--line-height-button);
+    font-weight: bold;
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  }
+
+  .btn-secondary:hover {
+    color: var(--color-anchor);
+    border-color: var(--color-anchor);
+  }
+
+  /* Custom scrollbar */
   ::-webkit-scrollbar {
     width: 6px;
   }
@@ -146,5 +276,19 @@ All colors MUST be HSL.
 
   ::-webkit-scrollbar-thumb:hover {
     background: hsl(var(--primary) / 0.5);
+  }
+
+  /* Responsive font sizes */
+  @media (min-width: 750px) {
+    :root {
+      --font-size-heading1: 4rem;
+      --font-size-heading2: 3rem;
+      --font-size-heading3: 2.4rem;
+      --font-size-title: 5rem;
+      --line-height-heading1: 1.2;
+      --line-height-heading2: 1.27;
+      --line-height-heading3: 1.33;
+      --line-height-title: 1.16;
+    }
   }
 }
