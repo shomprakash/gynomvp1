@@ -11,6 +11,8 @@ import Index from "./pages/Index";
 import AuthPage from "./pages/AuthPage";
 import PeriodTracker from "./pages/PeriodTracker";
 import InvestorsPage from "./pages/InvestorsPage";
+import WikiPage from "./pages/WikiPage";
+import WikiArticlePage from "./pages/WikiArticlePage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -29,6 +31,8 @@ const App = () => (
             <Route path="/chat" element={<Index />} />
             <Route path="/auth" element={<AuthPage />} />
             <Route path="/tracker" element={<PeriodTracker />} />
+            <Route path="/wiki" element={<WikiPage />} />
+            <Route path="/wiki/article/:id" element={<WikiArticlePage />} />
             <Route path="/investors" element={<InvestorsPage />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />

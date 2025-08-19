@@ -7,13 +7,49 @@ export type Json =
   | Json[]
 
 export type Database = {
-  // Allows to automatically instanciate createClient with right options
+  // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
     PostgrestVersion: "12.2.12 (cd3cf9e)"
   }
   public: {
     Tables: {
+      expert_verifications: {
+        Row: {
+          created_at: string
+          id: string
+          institution: string | null
+          medical_license_number: string
+          specialization: string
+          status: string | null
+          user_id: string
+          verification_documents: string[] | null
+          verified_at: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          institution?: string | null
+          medical_license_number: string
+          specialization: string
+          status?: string | null
+          user_id: string
+          verification_documents?: string[] | null
+          verified_at?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          institution?: string | null
+          medical_license_number?: string
+          specialization?: string
+          status?: string | null
+          user_id?: string
+          verification_documents?: string[] | null
+          verified_at?: string | null
+        }
+        Relationships: []
+      }
       period_cycles: {
         Row: {
           created_at: string
@@ -64,6 +100,7 @@ export type Database = {
           id: string
           updated_at: string
           user_id: string
+          user_role: Database["public"]["Enums"]["user_role"] | null
         }
         Insert: {
           created_at?: string
@@ -72,6 +109,7 @@ export type Database = {
           id?: string
           updated_at?: string
           user_id: string
+          user_role?: Database["public"]["Enums"]["user_role"] | null
         }
         Update: {
           created_at?: string
@@ -80,6 +118,7 @@ export type Database = {
           id?: string
           updated_at?: string
           user_id?: string
+          user_role?: Database["public"]["Enums"]["user_role"] | null
         }
         Relationships: []
       }
@@ -146,6 +185,101 @@ export type Database = {
         }
         Relationships: []
       }
+      wiki_articles: {
+        Row: {
+          author_id: string
+          author_type: Database["public"]["Enums"]["user_role"]
+          category: string
+          content: string
+          created_at: string
+          id: string
+          is_verified: boolean | null
+          summary: string | null
+          tags: string[] | null
+          title: string
+          updated_at: string
+          verification_sources: string[] | null
+          view_count: number | null
+        }
+        Insert: {
+          author_id: string
+          author_type?: Database["public"]["Enums"]["user_role"]
+          category: string
+          content: string
+          created_at?: string
+          id?: string
+          is_verified?: boolean | null
+          summary?: string | null
+          tags?: string[] | null
+          title: string
+          updated_at?: string
+          verification_sources?: string[] | null
+          view_count?: number | null
+        }
+        Update: {
+          author_id?: string
+          author_type?: Database["public"]["Enums"]["user_role"]
+          category?: string
+          content?: string
+          created_at?: string
+          id?: string
+          is_verified?: boolean | null
+          summary?: string | null
+          tags?: string[] | null
+          title?: string
+          updated_at?: string
+          verification_sources?: string[] | null
+          view_count?: number | null
+        }
+        Relationships: []
+      }
+      wiki_edits: {
+        Row: {
+          article_id: string
+          attachments: string[] | null
+          content_diff: string | null
+          created_at: string
+          edit_summary: string | null
+          editor_id: string
+          editor_type: Database["public"]["Enums"]["user_role"]
+          id: string
+          status: string | null
+          supporting_links: string[] | null
+        }
+        Insert: {
+          article_id: string
+          attachments?: string[] | null
+          content_diff?: string | null
+          created_at?: string
+          edit_summary?: string | null
+          editor_id: string
+          editor_type?: Database["public"]["Enums"]["user_role"]
+          id?: string
+          status?: string | null
+          supporting_links?: string[] | null
+        }
+        Update: {
+          article_id?: string
+          attachments?: string[] | null
+          content_diff?: string | null
+          created_at?: string
+          edit_summary?: string | null
+          editor_id?: string
+          editor_type?: Database["public"]["Enums"]["user_role"]
+          id?: string
+          status?: string | null
+          supporting_links?: string[] | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "wiki_edits_article_id_fkey"
+            columns: ["article_id"]
+            isOneToOne: false
+            referencedRelation: "wiki_articles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -154,7 +288,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      user_role: "standard" | "gyno_expert"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -281,6 +415,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      user_role: ["standard", "gyno_expert"],
+    },
   },
 } as const
