@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
@@ -7,13 +7,44 @@ import { useNavigate } from "react-router-dom";
 const HomePage = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
+  const [currentSuggestions, setCurrentSuggestions] = useState<string[]>([]);
+
+  // Health suggestion pool
+  const healthSuggestions = [
+    "Period Health", "Symptoms Analysis", "Wellness Guidance",
+    "Fertility Planning", "Birth Control", "Hormone Balance",
+    "Menstrual Cycle", "Pregnancy Care", "Sexual Health",
+    "PCOS Support", "Endometriosis Info", "Contraception Guide",
+    "Reproductive Health", "Gynecological Checkup", "Breast Health",
+    "UTI Prevention", "Vaginal Health", "Menopause Support"
+  ];
+
+  // Randomize suggestions
+  useEffect(() => {
+    const getRandomSuggestions = () => {
+      const shuffled = [...healthSuggestions].sort(() => 0.5 - Math.random());
+      return shuffled.slice(0, 3);
+    };
+    setCurrentSuggestions(getRandomSuggestions());
+    
+    // Update suggestions every 10 seconds
+    const interval = setInterval(() => {
+      setCurrentSuggestions(getRandomSuggestions());
+    }, 10000);
+    
+    return () => clearInterval(interval);
+  }, []);
 
   const handleSearch = () => {
     if (searchQuery.trim()) {
-      navigate('/chat', { state: { initialQuery: searchQuery.trim() } });
+      navigate('/chat', { state: { initialQuery: searchQuery.trim(), autoStart: true } });
     } else {
       navigate('/chat');
     }
+  };
+
+  const handleSuggestionClick = (suggestion: string) => {
+    navigate('/chat', { state: { initialQuery: suggestion, autoStart: true } });
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -23,38 +54,42 @@ const HomePage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col items-center justify-center px-4 relative">
-      {/* Professional background */}
+    <div className="min-h-screen bg-background flex flex-col items-center justify-center px-4 relative overflow-hidden">
+      {/* Beautiful gradient background */}
+      <div className="absolute inset-0 bg-gradient-hero"></div>
       <div className="absolute inset-0 bg-gradient-subtle"></div>
       
+      {/* Floating decorative elements */}
+      <div className="absolute top-20 left-10 w-20 h-20 bg-health-mint rounded-full opacity-60 blur-sm"></div>
+      <div className="absolute top-40 right-16 w-16 h-16 bg-health-lavender rounded-full opacity-50 blur-sm"></div>
+      <div className="absolute bottom-32 left-20 w-24 h-24 bg-health-peach rounded-full opacity-40 blur-sm"></div>
+      <div className="absolute bottom-20 right-10 w-18 h-18 bg-health-sky rounded-full opacity-50 blur-sm"></div>
+      
       {/* Main content */}
-      <div className="relative z-10 text-center max-w-2xl">
+      <div className="relative z-10 text-center max-w-3xl mx-auto">
         {/* Logo */}
-        <div className="mb-8">
-          <h1 className="text-6xl sm:text-7xl md:text-8xl font-bold text-primary tracking-wider mb-4">
+        <div className="mb-10">
+          <h1 className="font-futura text-7xl sm:text-8xl md:text-9xl font-medium text-primary mb-6 tracking-tight">
             gyno
           </h1>
-          <p className="text-lg text-muted-foreground mb-2">
-            Women's Health Guidance Platform
-          </p>
-          <p className="text-base text-muted-foreground opacity-80">
-            Confidential AI-powered gynecological health consultation
+          <p className="text-xl text-muted-foreground font-medium">
+            Advanced AI-assisted women's health platform
           </p>
         </div>
 
         {/* Search bar */}
-        <div className="mb-8 w-full max-w-2xl">
-          <div className="relative">
+        <div className="mb-10 w-full max-w-2xl mx-auto">
+          <div className="relative group">
             <Input
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               onKeyPress={handleKeyPress}
-              placeholder="Ask about periods, symptoms, contraception..."
-              className="w-full h-14 pl-6 pr-14 text-lg bg-input border-border focus:ring-primary focus:border-primary rounded-full placeholder:text-muted-foreground/70"
+              placeholder="Ask about periods, symptoms, contraception, or any health concern..."
+              className="w-full h-16 pl-6 pr-16 text-lg bg-input/80 backdrop-blur-sm border-2 border-border hover:border-primary/50 focus:border-primary rounded-xl shadow-input transition-all duration-300 placeholder:text-muted-foreground/60"
             />
             <Button
               onClick={handleSearch}
-              className="absolute right-2 top-2 h-10 w-10 p-0 rounded-full hover:bg-primary/90 transition-all duration-200"
+              className="absolute right-2 top-2 h-12 w-12 p-0 rounded-lg bg-primary hover:bg-primary-glow shadow-button transition-all duration-300 hover:scale-105"
             >
               <Search className="h-5 w-5" />
             </Button>
@@ -62,31 +97,37 @@ const HomePage = () => {
         </div>
 
         {/* Action buttons */}
-        <div className="space-y-4">
+        <div className="space-y-6">
           <Button
             onClick={() => navigate('/chat')}
-            className="px-8 py-4 text-lg rounded-full min-w-[200px] font-semibold"
+            className="px-10 py-4 text-lg rounded-xl min-w-[220px] font-semibold bg-gradient-primary hover:shadow-button transition-all duration-300 hover:scale-105"
           >
             Start Consultation
           </Button>
           
-          <div className="flex flex-wrap justify-center gap-3 text-sm text-muted-foreground">
-            <span className="px-4 py-2 bg-muted rounded-full hover:bg-muted/80 transition-colors cursor-pointer">
-              Period Health
-            </span>
-            <span className="px-4 py-2 bg-muted rounded-full hover:bg-muted/80 transition-colors cursor-pointer">
-              Symptoms Analysis
-            </span>
-            <span className="px-4 py-2 bg-muted rounded-full hover:bg-muted/80 transition-colors cursor-pointer">
-              Wellness Guidance
-            </span>
+          <div className="flex flex-wrap justify-center gap-3">
+            {currentSuggestions.map((suggestion, index) => (
+              <Button
+                key={suggestion}
+                onClick={() => handleSuggestionClick(suggestion)}
+                variant="outline"
+                className={`px-6 py-3 text-sm font-medium rounded-xl border-2 transition-all duration-300 hover:scale-105 hover:shadow-soft ${
+                  index === 0 ? 'border-health-mint bg-health-mint/30 hover:bg-health-mint/50' :
+                  index === 1 ? 'border-health-lavender bg-health-lavender/30 hover:bg-health-lavender/50' :
+                  'border-health-peach bg-health-peach/30 hover:bg-health-peach/50'
+                }`}
+              >
+                {suggestion}
+              </Button>
+            ))}
           </div>
         </div>
 
         {/* Footer */}
-        <div className="mt-12 text-sm text-muted-foreground space-y-2 max-w-lg text-center">
-          <p>AI consultation is a supplement, not a replacement for professional medical care.</p>
-          <p className="text-xs">For emergency symptoms, seek immediate medical attention.</p>
+        <div className="mt-16">
+          <p className="text-sm text-muted-foreground/80 max-w-2xl mx-auto leading-relaxed">
+            AI consultation is a supplement, not a replacement for professional medical care. For emergency symptoms, seek immediate medical attention.
+          </p>
         </div>
       </div>
     </div>

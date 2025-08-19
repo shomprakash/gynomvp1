@@ -1,65 +1,85 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 /* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
 All colors MUST be HSL.
+Inspired by modern health platforms with vibrant pastels
 */
 
 @layer base {
   :root {
-    /* Light Mode - Ada.com inspired professional healthcare UI */
+    /* Light Mode - Vibrant Health Platform UI */
     --background: 0 0% 100%;
-    --foreground: 215 25% 27%;
+    --foreground: 215 30% 15%;
 
-    --card: 0 0% 98%;
-    --card-foreground: 215 25% 27%;
+    --card: 0 0% 99%;
+    --card-foreground: 215 30% 15%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 215 25% 27%;
+    --popover-foreground: 215 30% 15%;
 
-    --primary: 210 79% 46%;
+    /* Vibrant primary palette */
+    --primary: 210 85% 55%;
     --primary-foreground: 0 0% 100%;
-    --primary-glow: 210 79% 56%;
+    --primary-glow: 210 85% 65%;
 
-    --secondary: 0 0% 96%;
-    --secondary-foreground: 215 25% 27%;
+    --secondary: 150 45% 94%;
+    --secondary-foreground: 150 30% 25%;
 
-    --muted: 220 13% 91%;
-    --muted-foreground: 215 16% 47%;
+    --muted: 210 20% 96%;
+    --muted-foreground: 215 15% 50%;
 
-    --accent: 210 40% 95%;
-    --accent-foreground: 215 25% 27%;
+    --accent: 280 35% 95%;
+    --accent-foreground: 280 30% 25%;
 
-    --destructive: 0 84% 60%;
+    /* Pastel health colors */
+    --health-mint: 150 50% 85%;
+    --health-lavender: 280 40% 90%;
+    --health-peach: 15 70% 90%;
+    --health-sky: 200 70% 90%;
+    --health-rose: 340 60% 92%;
+    --health-sage: 120 25% 88%;
+
+    /* Status colors with softer tones */
+    --destructive: 0 70% 65%;
     --destructive-foreground: 0 0% 100%;
 
-    --warning: 38 92% 50%;
+    --warning: 35 80% 60%;
     --warning-foreground: 0 0% 100%;
 
-    --success: 142 76% 36%;
+    --success: 145 60% 50%;
     --success-foreground: 0 0% 100%;
 
-    --border: 220 13% 91%;
+    --border: 210 20% 92%;
     --input: 0 0% 100%;
-    --ring: 210 79% 46%;
+    --ring: 210 85% 55%;
 
-    --medical-blue: 210 79% 46%;
-    --medical-teal: 158 64% 52%;
-    --chat-bubble-user: 210 79% 46%;
-    --chat-bubble-ai: 0 0% 96%;
-    --credibility-high: 142 76% 36%;
-    --credibility-medium: 38 92% 50%;
-    --credibility-low: 0 84% 60%;
+    --medical-blue: 210 85% 55%;
+    --medical-teal: 158 60% 55%;
+    --chat-bubble-user: 210 85% 55%;
+    --chat-bubble-ai: 210 20% 96%;
+    --credibility-high: 145 60% 50%;
+    --credibility-medium: 35 80% 60%;
+    --credibility-low: 0 70% 65%;
 
-    --gradient-primary: linear-gradient(135deg, hsl(210 79% 46%), hsl(210 79% 56%));
-    --gradient-cyber: linear-gradient(45deg, hsl(210 79% 46% / 0.05), hsl(210 79% 56% / 0.05));
-    --gradient-subtle: linear-gradient(180deg, hsl(0 0% 100%), hsl(0 0% 98%));
-    --shadow-glow: 0 0 40px hsl(210 79% 46% / 0.15);
-    --shadow-neon: 0 2px 20px hsl(210 79% 46% / 0.1), 0 4px 40px hsl(210 79% 46% / 0.05);
-    --shadow-card: 0 2px 20px hsl(0 0% 0% / 0.06), 0 0 0 1px hsl(220 13% 91%);
+    /* Beautiful gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(210 85% 55%), hsl(280 50% 70%));
+    --gradient-health: linear-gradient(135deg, hsl(150 50% 85%), hsl(200 70% 90%));
+    --gradient-pastel: linear-gradient(45deg, hsl(15 70% 90%), hsl(280 40% 90%));
+    --gradient-subtle: linear-gradient(180deg, hsl(0 0% 100%), hsl(210 20% 98%));
+    --gradient-hero: linear-gradient(135deg, hsl(210 85% 55% / 0.1), hsl(280 50% 70% / 0.1));
+    
+    /* Soft shadows */
+    --shadow-soft: 0 4px 20px hsl(210 85% 55% / 0.08);
+    --shadow-card: 0 2px 16px hsl(0 0% 0% / 0.04);
+    --shadow-button: 0 2px 12px hsl(210 85% 55% / 0.2);
+    --shadow-input: 0 1px 8px hsl(0 0% 0% / 0.04);
 
-    --radius: 12px;
+    --radius: 16px;
+    --radius-lg: 20px;
+    --radius-xl: 24px;
   }
 
   .dark {
@@ -126,8 +146,17 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
-    font-family: 'Noto Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     transition: background-color 0.3s ease, color 0.3s ease;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Futura-style font for main heading */
+  .font-futura {
+    font-family: 'Futura', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-weight: 500;
+    letter-spacing: -0.042em;
   }
 
   /* Custom scrollbar for chat */

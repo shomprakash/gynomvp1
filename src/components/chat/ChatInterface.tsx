@@ -56,8 +56,46 @@ export const ChatInterface = () => {
 
     // Handle initial query from homepage
     const initialQuery = location.state?.initialQuery;
+    const autoStart = location.state?.autoStart;
+    
     if (initialQuery && typeof initialQuery === 'string') {
       setInput(initialQuery);
+      
+      // Auto-start conversation if requested
+      if (autoStart) {
+        setTimeout(() => {
+          const userMessage: Message = {
+            id: Date.now().toString(),
+            content: initialQuery,
+            type: 'user',
+            timestamp: new Date()
+          };
+          
+          setMessages(prev => [...prev, userMessage]);
+          setInput("");
+          
+          // Generate AI response
+          generateResponse(initialQuery).then(response => {
+            if (response.isEmergency) {
+              setShowEmergency(true);
+            }
+
+            const aiMessage: Message = {
+              id: (Date.now() + 1).toString(),
+              content: response.content,
+              type: 'ai',
+              timestamp: new Date(),
+              credibilityScore: response.credibilityScore,
+              isEmergency: response.isEmergency
+            };
+
+            setMessages(prev => [...prev, aiMessage]);
+          }).catch(() => {
+            toast.error("Sorry, I couldn't process your message. Please try again.");
+          });
+        }, 500);
+      }
+      
       // Clear the state to prevent reprocessing on re-renders
       window.history.replaceState({}, document.title);
     }

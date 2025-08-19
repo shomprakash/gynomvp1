@@ -19,8 +19,8 @@ export default {
 		},
 		extend: {
 			fontFamily: {
-				'noto': ['Noto Sans', 'sans-serif'],
-				'serif': ['PT Serif', 'serif'],
+				'inter': ['Inter', 'sans-serif'],
+				'futura': ['Futura', 'Inter', 'sans-serif'],
 			},
 			colors: {
 				border: 'hsl(var(--border))',
@@ -65,6 +65,14 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
+				health: {
+					mint: 'hsl(var(--health-mint))',
+					lavender: 'hsl(var(--health-lavender))',
+					peach: 'hsl(var(--health-peach))',
+					sky: 'hsl(var(--health-sky))',
+					rose: 'hsl(var(--health-rose))',
+					sage: 'hsl(var(--health-sage))'
+				},
 				medical: {
 					blue: 'hsl(var(--medical-blue))',
 					teal: 'hsl(var(--medical-teal))'
@@ -81,18 +89,23 @@ export default {
 			},
 			backgroundImage: {
 				'gradient-primary': 'var(--gradient-primary)',
-				'gradient-cyber': 'var(--gradient-cyber)',
-				'gradient-subtle': 'var(--gradient-subtle)'
+				'gradient-health': 'var(--gradient-health)',
+				'gradient-pastel': 'var(--gradient-pastel)',
+				'gradient-subtle': 'var(--gradient-subtle)',
+				'gradient-hero': 'var(--gradient-hero)'
 			},
 			boxShadow: {
-				'glow': 'var(--shadow-glow)',
-				'neon': 'var(--shadow-neon)',
-				'card': 'var(--shadow-card)'
+				'soft': 'var(--shadow-soft)',
+				'card': 'var(--shadow-card)',
+				'button': 'var(--shadow-button)',
+				'input': 'var(--shadow-input)'
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
 				md: 'calc(var(--radius) - 2px)',
-				sm: 'calc(var(--radius) - 4px)'
+				sm: 'calc(var(--radius) - 4px)',
+				xl: 'var(--radius-lg)',
+				'2xl': 'var(--radius-xl)'
 			},
 			keyframes: {
 				'accordion-down': {
